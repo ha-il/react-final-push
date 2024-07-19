@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPopular } from '../features/api';
+import { getPopular } from '../api';
 
 interface Movie {
   adult: boolean;
