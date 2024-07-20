@@ -1,7 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { getComingSoon, getNowPlaying, getPopular } from '../../api';
+import {
+  BASE_URL,
+  getComingSoon,
+  getNowPlaying,
+  getPopular,
+  makeImagePath,
+} from '../../api';
 import { useLocation } from 'react-router-dom';
 import { ROUTER_PATH } from '../../shared/constants';
+import styled from 'styled-components';
 
 interface Movie {
   adult: boolean;
@@ -41,8 +48,37 @@ export default function MovieList() {
   return (
     <ul>
       {data?.results.map((movie: Movie) => (
-        <li key={movie.id}>{movie.title}</li>
+        <Li key={movie.id}>
+          <ImgContainer>
+            <img src={makeImagePath(movie.poster_path)} alt="" />
+          </ImgContainer>
+          <div>
+            <div>{movie.title}</div>
+            <div>
+              <span>{movie.vote_average}</span>
+              <span>/</span>
+              <span>{movie.popularity}</span>
+            </div>
+          </div>
+        </Li>
       ))}
     </ul>
   );
 }
+
+const Li = styled.li`
+  max-width: 10.625rem;
+  height: 18.4375rem;
+`;
+
+const ImgContainer = styled.div`
+  max-width: 10.625rem;
+  height: 14.625rem;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+`;

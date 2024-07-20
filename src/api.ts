@@ -1,4 +1,4 @@
-const BASE_URL = 'https://movies-api.nomadcoders.workers.dev';
+export const BASE_URL = 'https://movies-api.nomadcoders.workers.dev';
 
 export async function getPopular() {
   return await fetch(`${BASE_URL}/popular`).then((r) => r.json());

@@ -7,6 +7,7 @@ import Root from './pages/root.tsx';
 import Home from './pages/Home.tsx';
 import MovieList from './components/Home/MovieList.tsx';
 import { ROUTER_PATH } from './shared/constants/index.ts';
+import { GlobalStyle } from './shared/styles/GlobalStyle.tsx';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
       <RouterProvider router={router} />
     </QueryClientProvider>
   </React.StrictMode>
