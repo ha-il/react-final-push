@@ -1,10 +1,15 @@
 import { Outlet } from 'react-router-dom';
+import Header from '../components/layouts/Header';
+import Nav from '../components/layouts/Nav';
+import Footer from '../components/layouts/Footer';
 
 export default function Root() {
   return (
     <>
-      <h1>Hello 졸업작품!</h1>
+      <Header />
+      <Nav />
       <Outlet />
+      <Footer />
     </>
   );
 }

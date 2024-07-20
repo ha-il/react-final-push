@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPopular } from '../api';
+import { getComingSoon, getNowPlaying, getPopular } from '../../api';
+import { useLocation } from 'react-router-dom';
+import { ROUTER_PATH } from '../../shared/constants';
 
 interface Movie {
   adult: boolean;
@@ -18,25 +20,29 @@ interface Movie {
   vote_count: number; // 1815
 }
 
-function MovieList() {
+export default function MovieList() {
+  const { pathname } = useLocation();
+
+  const movieRoutes = {
+    [ROUTER_PATH.root]: getPopular,
+    [ROUTER_PATH.comingSoon]: getComingSoon,
+    [ROUTER_PATH.nowPlaying]: getNowPlaying,
+  };
+
+  const queryFn = movieRoutes[pathname];
+
   const { isPending, isError, data, error } = useQuery({
-    queryKey: ['movie'],
-    queryFn: getPopular,
+    queryKey: ['movies' + pathname],
+    queryFn,
   });
 
   if (isPending) return <span>Loading...</span>;
-
   if (isError) return <span>Error: {error.message}</span>;
-
   return (
-    <div>
-      <ul>
-        {data?.results.map((movie: Movie) => (
-          <li key={movie.id}>{movie.title}</li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {data?.results.map((movie: Movie) => (
+        <li key={movie.id}>{movie.title}</li>
+      ))}
+    </ul>
   );
 }
-
-export default MovieList;

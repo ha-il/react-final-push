@@ -1,9 +1,11 @@
-import MovieList from '../components/MovieList';
+import Advertisement from '../components/Home/Advertisement';
+import MovieSection from '../components/Home/MovieSection';
 
 function Home() {
   return (
     <>
-      <MovieList />
+      <Advertisement />
+      <MovieSection />
     </>
   );
 }
