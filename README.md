@@ -15,11 +15,11 @@
 
 참고할만한 디자인으로 CGV와 메가박스 중에서 고민을 했습니다.
 전반적인 디자인은 CGV 사이트를 참고했습니다.
-웹과 모바일의 UI 차이가 메가박스보다 크지 않았기 때문에 반응형을 더 빠르게 구현할 수 있을 거라 생각했습니다..
+웹과 모바일의 UI 차이가 메가박스보다 크지 않았기 때문에 반응형을 더 빠르게 구현할 수 있을 거라 생각했습니다.
 
 ## 개발
 
-### 문제1: unknown 타입 다루기
+### 1. unknown 타입 다루기
 
 ```tsx
 // ./src/pages/ErrorPage.tsx
@@ -67,3 +67,30 @@ export default function ErrorPage() {
   );
 }
 ```
+
+### 2. 스켈레톤 로딩 구현
+
+`MovieListSkeleton.tsx` 컴포넌트를 만들어서 data가 로딩될 때 보여질 스켈레톤 로딩을 구현했습니다.
+
+```tsx
+export default function MovieList() {
+
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: ['movies' + pathname],
+    queryFn,
+  });
+
+  // 스켈레톤 로딩을 구현한 부분
+  if (isPending) return <MovieListSkeleton />;
+  if (isError) return <span>Error: {error.message}</span>;
+
+  return (
+    // 생략...
+  );
+}
+
+```
+
+### 3. Swiper.js 라이브러리 사용
+
+광고 칸과 무비 차트 부분에 `Swiper.js`라는 라이브러리를 사용했습니다. 빠른 시간 안에 좋은 퀄리티의 슬라이더를 작성할 수 있어서 다른 분들께도 추천드리고 싶습니다.
