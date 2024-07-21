@@ -42,7 +42,7 @@ export default function Advertisement() {
 
 const AdContainer = styled.section`
   height: 20rem;
-  background-color: gray;
+  background-color: #16181d;
 `;
 
 const SSwiper = styled(Swiper)`
@@ -60,9 +60,7 @@ const SSwiperSlide = styled(SwiperSlide)`
   text-align: center;
   font-size: 18px;
   background: #000;
-  min-width: 980px;
 
-  /* Center slide text vertically */
   display: flex;
   justify-content: center;
   align-items: center;
