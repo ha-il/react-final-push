@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
+
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Noto+Sans+KR:wght@100..900&display=swap');
+
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -45,4 +48,9 @@ export const GlobalStyle = createGlobalStyle`
     border-spacing: 0;
   }
 
+  body {
+    background-color: #23272F;
+    color: white;
+    font-family: "Noto Sans KR", sans-serif;
+  }
 `;

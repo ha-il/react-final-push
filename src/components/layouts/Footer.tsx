@@ -1,10 +1,19 @@
 import styled from 'styled-components';
 
 export default function Footer() {
-  return <Container>@ 김형우</Container>;
+  return (
+    <Container>
+      <div>© 2024, Hyeongwoo Kim</div>
+    </Container>
+  );
 }
 
 const Container = styled.footer`
-  max-width: 61.25rem;
-  margin: 0 auto;
+  background-color: #16181d;
+  padding: 2rem;
+
+  & div {
+    width: 980px;
+    margin: 0 auto;
+  }
 `;
