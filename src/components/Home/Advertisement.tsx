@@ -1,19 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
-import { Autoplay } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { SwiperSlide, Swiper } from 'swiper/react';
-import { getMovie, makeBgPath } from '../../api';
-import { Link } from 'react-router-dom';
+import { getPopular, makeBgPath } from '../../api';
+import { Movie } from '../../shared/typings';
 
 export default function Advertisement() {
-  const id = '1022789';
-
-  const { isPending, data } = useQuery({
-    queryKey: ['movieId', id],
-    queryFn: ({ queryKey }) => getMovie(queryKey[1]),
+  const { data } = useQuery({
+    queryKey: ['ad-movies'],
+    queryFn: getPopular,
   });
-
-  console.log(data);
 
   return (
     <AdContainer>
@@ -23,44 +19,22 @@ export default function Advertisement() {
           delay: 5000,
           disableOnInteraction: false,
         }}
-        modules={[Autoplay]}
+        pagination={{ type: 'fraction' }}
+        modules={[Autoplay, Pagination]}
       >
-        <SSwiperSlide>
-          <Contents>
-            <ImgContainer>
-              {isPending ? (
-                <div></div>
-              ) : (
+        {data?.results.map((movie: Movie) => (
+          <SSwiperSlide key={movie.id}>
+            <Contents>
+              <ImgContainer>
                 <>
-                  <img src={makeBgPath(data.backdrop_path)} />
-                  <strong>{data.title}</strong>
-                  <span>{data.overview}</span>
+                  <img src={makeBgPath(movie.backdrop_path)} />
+                  <strong>{movie.title}</strong>
+                  <span>{movie.overview}</span>
                 </>
-              )}
-            </ImgContainer>
-          </Contents>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <Link
-            to="https://nomadcoders.notion.site/02feb5f837414326a4eb937636f96e2a"
-            target="_blank"
-          >
-            <Contents>
-              <AdImgComtainer>
-                <img src="../../public/images/ad/0.jpg" alt="" />
-              </AdImgComtainer>
+              </ImgContainer>
             </Contents>
-          </Link>
-        </SSwiperSlide>
-        <SSwiperSlide>
-          <Link to="https://ha-il.github.io/" target="_blank">
-            <Contents>
-              <AdImgComtainer>
-                <img src="../../public/images/ad/1.jpg" alt="" />
-              </AdImgComtainer>
-            </Contents>
-          </Link>
-        </SSwiperSlide>
+          </SSwiperSlide>
+        ))}
       </SSwiper>
     </AdContainer>
   );
@@ -68,12 +42,18 @@ export default function Advertisement() {
 
 const AdContainer = styled.section`
   height: 20rem;
-  background-color: #000;
+  background-color: gray;
 `;
 
 const SSwiper = styled(Swiper)`
   width: 100%;
   height: 100%;
+  .swiper-pagination {
+    width: 5rem;
+    position: absolute;
+    left: unset;
+    right: 0;
+  }
 `;
 
 const SSwiperSlide = styled(SwiperSlide)`
@@ -93,26 +73,6 @@ const Contents = styled.div`
   height: 100%;
   margin: 0 auto;
   position: relative;
-`;
-
-const AdImgComtainer = styled.div`
-  &:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background-image: linear-gradient(
-      to right,
-      #000 0%,
-      rgba(0, 0, 0, 0.1) 15%,
-      rgba(0, 0, 0, 0) 50%,
-      rgba(0, 0, 0, 0.1) 85%,
-      #000 100%
-    );
-    z-index: 2;
-  }
 `;
 
 const ImgContainer = styled.div`

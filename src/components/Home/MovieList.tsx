@@ -18,26 +18,13 @@ import 'swiper/css/pagination';
 // import required modules
 import { Navigation, Pagination } from 'swiper/modules';
 import MovieListSkeleton from './MovieListSkeleton';
-
-interface Movie {
-  adult: boolean;
-  backdrop_path: string; // "/*.jpg"
-  genre_ids: number[]; // [16, 10751, 12, 35, 18]
-  id: number; // 1022789
-  original_language: string; // "en"
-  original_title: string; //"Inside Out 2"
-  overview: string; //"Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpecte: new Emotions! Joy, Sadness, Anger, Fear and Disgust, who’ve long been running a successful operation by all accounts, aren’t sure how to feel when Anxiety shows up. And it looks like she’s not alone."
-  popularity: number; // 6482.514
-  poster_path: string; // "/*.jpg"
-  release_date: string; // "2024-06-11"
-  title: string; // "Inside Out 2"
-  video: boolean;
-  vote_average: number; //7.7
-  vote_count: number; // 1815
-}
+import { Movie } from '../../shared/typings';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 
 export default function MovieList() {
   const { pathname } = useLocation();
+  const [selectedId, setSelectedId] = useState(0);
 
   const movieRoutes = {
     [ROUTER_PATH.root]: getPopular,
@@ -54,38 +41,71 @@ export default function MovieList() {
 
   if (isPending) return <MovieListSkeleton />;
   if (isError) return <span>Error: {error.message}</span>;
+
   return (
-    <SSwiper
-      slidesPerView={'auto'}
-      slidesPerGroup={5}
-      spaceBetween={32}
-      centeredSlides={false}
-      grabCursor={true}
-      breakpoints={{}}
-      navigation={true}
-      modules={[Navigation, Pagination]}
-    >
-      {data?.results.map((movie: Movie, i: number) => (
-        <SSwiperSlide key={movie.id}>
-          <ImgContainer>
-            <img src={makeImagePath(movie.poster_path)} alt="" />
-            <Ranking>{i + 1}</Ranking>
-          </ImgContainer>
-          <div>
-            <Title>{movie.title}</Title>
-            <Info>
-              <span>{movie.vote_average.toFixed(1)}</span>
-              <span>|</span>
-              <span>
-                예매율 {(Number(movie.popularity.toFixed()) / 100).toFixed(1)}%
-              </span>
-            </Info>
-          </div>
-        </SSwiperSlide>
-      ))}
-    </SSwiper>
+    <>
+      <SSwiper
+        slidesPerView={'auto'}
+        slidesPerGroup={5}
+        spaceBetween={32}
+        centeredSlides={false}
+        grabCursor={true}
+        breakpoints={{}}
+        navigation={true}
+        modules={[Navigation, Pagination]}
+      >
+        {data?.results.map((movie: Movie, i: number) => (
+          <SSwiperSlide key={movie.id} onClick={() => setSelectedId(movie.id)}>
+            <motion.div layoutId={String(movie.id)}>
+              <ImgContainer>
+                <img src={makeImagePath(movie.poster_path)} alt="" />
+                <Ranking>{i + 1}</Ranking>
+              </ImgContainer>
+              <div>
+                <Title>{movie.title}</Title>
+                <Info>
+                  <span>{movie.vote_average.toFixed(1)}</span>
+                  <span>|</span>
+                  <span>
+                    예매율{' '}
+                    {(Number(movie.popularity.toFixed()) / 100).toFixed(1)}%
+                  </span>
+                </Info>
+              </div>
+            </motion.div>
+          </SSwiperSlide>
+        ))}
+      </SSwiper>
+      <AnimatePresence>
+        {selectedId && (
+          <Modal
+            layoutId={String(selectedId)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <button onClick={() => setSelectedId(0)}>X</button>
+          </Modal>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
+
+const Modal = styled(motion.div)`
+  background-color: tomato;
+  position: fixed;
+  top: 0;
+  left: 27.8vw;
+  width: 40rem;
+  height: 40rem;
+  border-radius: 2rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const SSwiper = styled(Swiper)`
   .swiper-button-next,
