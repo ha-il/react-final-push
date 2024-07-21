@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
-import { Autoplay, Pagination } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import { SwiperSlide, Swiper } from 'swiper/react';
 import { getPopular, makeBgPath } from '../../api';
 import { Movie } from '../../shared/typings';
@@ -19,8 +19,7 @@ export default function Advertisement() {
           delay: 5000,
           disableOnInteraction: false,
         }}
-        pagination={{ type: 'fraction' }}
-        modules={[Autoplay, Pagination]}
+        modules={[Autoplay]}
       >
         {data?.results.map((movie: Movie) => (
           <SSwiperSlide key={movie.id}>
