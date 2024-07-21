@@ -210,7 +210,7 @@ const Modal = styled(motion.div)`
   left: 50%;
   transform: translate(-50%, -50%) !important;
 
-  width: 40rem;
+  width: 30rem;
   height: 40rem;
   border-radius: 0.5rem;
   z-index: 11;
